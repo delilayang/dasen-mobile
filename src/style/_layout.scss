@@ -1,0 +1,48 @@
+@import './theming';
+@import './base';
+
+.lay-scroller {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.lay-fixedbody {
+    overflow-y: hidden;
+}
+
+.l-wrap {
+    margin-top: 0.3em;
+}
+
+.l-cell {
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    padding: 0.6em 1.4em;
+    @include themify() {
+        background: themed('c-item-bg');
+        color: themed('c-item-txt');
+        border-bottom: 1px solid themed('c-item-border');
+    }
+    &:last-child {
+        border-bottom: none;
+    }
+    .l-cell-item {
+        flex: 1 0 auto;
+        &:last-child {
+            text-align: right;
+        }
+    }
+}
+
+.l-well {
+    margin: 0 0.6em;
+}
+
+.l-icobg {
+    display: block;
+    background-position: center center;
+    background-size: auto 95%;
+    background-repeat: no-repeat;
+}

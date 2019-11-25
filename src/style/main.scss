@@ -1,0 +1,263 @@
+@import './theming';
+@import './base';
+@import './layout';
+@import './iconfont/iconfont.css';
+
+
+* {
+    -webkit-touch-callout:none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust:none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select:none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+}
+html, body { height: 100%; }
+html {
+    @include interpolate(font-size, 320px, 420px, 12px, 16px);
+    //overflow-y: hidden;
+}
+body {
+    font-family: -apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #fff;
+    a {
+        text-decoration: none;
+    }
+    position: relative;
+}
+
+ul, ol {
+    list-style: none;
+    margin: 0; padding: 0;
+}
+
+// Setting style for theme class element itself
+@each $theme-name, $map in $themes {
+    .theme-#{$theme-name} {
+        transition: all 0.3s ease-in;
+        transition-property: background, translate3d;
+        background-color: map-get($map, c-paper-bg);
+        color: map-get($map, c-txt-main);
+        a {
+            color: map-get($map, c-txt-main);
+        }
+        * {
+            -webkit-tap-highlight-color:map-get($map, c-tap); /* prevent tap highlight color / shadow */
+        }
+    }
+}
+
+
+#app {
+    width: 100vw;
+    overflow: hidden;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-left: constant(safe-area-inset-left);
+    padding-left: env(safe-area-inset-left);
+    padding-right: constant(safe-area-inset-right);
+    padding-right: env(safe-area-inset-right);
+}
+
+#nav {
+    @include themify() {
+        background: themed('my-color');
+    }
+}
+
+
+
+header.nav {
+    @include header-font;
+    @include themify() {
+        background: themed('c-bg');
+    }
+    box-sizing: border-box;
+    padding: $nav-pad-top 0 $nav-pad-btm;
+    padding: calc(#{$nav-pad-top} + constant(safe-area-inset-top)) constant(safe-area-inset-right) #{$nav-pad-btm} constant(safe-area-inset-left);
+    padding: calc(#{$nav-pad-top} + env(safe-area-inset-top)) env(safe-area-inset-right) #{$nav-pad-btm} env(safe-area-inset-left);
+    display: flex;
+    position: fixed;
+    top: 0; left: 0;
+    @media only screen and (min-width: 599px) { 
+        left: 50%; transform: translateX(-50%);
+    }
+    width: 100%; max-width: 600px;
+    z-index: 1000;
+    @include navHeight(height);
+    .nav-item {
+        flex: 1 0 calc(50% - 4em);
+        font-size: 0.95em;
+        text-overflow: ellipsis;
+        margin: 0 0.5em;
+        white-space: nowrap;
+        & + .nav-item {
+            text-align: right;
+        }
+    }
+
+    .title {
+        flex: 1 1 6em;
+        //min-width: 4em;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        & + .nav-item {
+            text-align: right;
+        }
+    }
+
+    & + .wrap-content {
+        @include header-font;
+        padding-top: 2.46em;
+        padding-top: calc(2.46em + constant(safe-area-inset-top));
+        padding-top: calc(2.46em + env(safe-area-inset-top));
+        //min-height: calc(100vh - 2.46em);
+    }
+
+    .nav-link {
+        display: inline-block;
+        //margin: 0 0.2em;
+        padding: 0 0.3em;
+        vertical-align: middle;
+        position: relative;
+    }
+
+    .nav-link-solid {
+        @extend .nav-link;
+        padding: 0 0.5em;
+        margin-left: 0.2em;
+        border-radius: 0.7em;
+        @include themify() {
+            color: themed('c-txt-hl');
+            background: themed('c-bg-hl');
+        }
+    }
+}
+
+.nav-tabs {
+    position: fixed;
+    width: 100vw;
+    @media only screen and (min-width: 599px) { 
+        left: 50%; transform: translateX(-50%);
+    }
+    max-width: 600px;
+    height: $tabs-height;
+    left: 0; bottom: 0;
+    overflow: hidden;
+    z-index: 1000;
+    @media only screen and (orientation : portrait) { 
+        padding-bottom: constant(safe-area-inset-bottom);
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+    
+    @include themify() {
+        a {
+            color: themed('c-txt-c');
+        }
+        border-top: 1px solid themed('c-border');
+        //background: themed('c-tab-bg');
+    }
+
+    &:before {
+        content: '';
+        position: absolute; z-index: -1;
+        width: 120%; height: 120%; top: -10%; left: -10%;
+        @include themify() {
+            background: themed('c-tab-bg');
+        }
+        filter: blur(3px);
+    }
+
+    display: flex;
+    justify-content: space-between;
+    .tab-item {
+        flex: 1 0 0;
+        text-align: center;
+        font-size: 0.9em;
+        a {
+            display: block;
+            padding-top: 0.3em;
+            @each $theme-name, $map in $themes {
+                .theme-#{$theme-name} &.active .ico-game {
+                    background-image: url('./images/#{$theme-name}/tab-game-active.png');
+                }
+                .theme-#{$theme-name} &.active .ico-orders {
+                    background-image: url('./images/#{$theme-name}/tab-orders-active.png');
+                }
+                .theme-#{$theme-name} &.active .ico-funds {
+                    background-image: url('./images/#{$theme-name}/tab-funds-active.png');
+                }
+                .theme-#{$theme-name} &.active .ico-chat {
+                    background-image: url('./images/#{$theme-name}/tab-chat-active.png');
+                }
+                .theme-#{$theme-name} &.active .ico-user {
+                    background-image: url('./images/#{$theme-name}/tab-user-active.png');
+                }
+            }
+        }
+        i {
+            @extend .l-icobg;
+            display: block;
+            height: 2.6rem;
+            &.ico-game {
+                background-image: url('./images/tab-game.png');
+                .theme-dark & {
+                    background-image: url('./images/dark/tab-game.png');
+                }
+            }
+            &.ico-orders {
+                background-image: url('./images/tab-orders.png');
+                .theme-dark & {
+                    background-image: url('./images/dark/tab-orders.png');
+                }
+            }
+            &.ico-funds {
+                background-image: url('./images/tab-funds.png');
+                .theme-dark & {
+                    background-image: url('./images/dark/tab-funds.png');
+                }
+            }
+            &.ico-chat {
+                background-image: url('./images/tab-chat.png');
+                .theme-dark & {
+                    background-image: url('./images/dark/tab-chat.png');
+                }
+            }
+            &.ico-user {
+                background-image: url('./images/tab-user.png');
+                .theme-dark & {
+                    background-image: url('./images/dark/tab-user.png');
+                }
+            }
+        }
+    }
+    
+
+}
+
+.wrap-router {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+
+.fixed-content {
+    @extend .wrap-content;
+    position: absolute;
+    top: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    
+    .sticky-part {
+        flex: 0 0 auto;
+    }
+    .scroll-part {
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+

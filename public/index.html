@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>app</title>
+</head>
+
+<body class="theme-blue">
+    <noscript>
+        <strong>We're sorry but mobilev2 doesn't work properly without JavaScript enabled. Please enable it to
+            continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <script>
+        function getCookie(name) {
+            var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+            if (match) return match[2];
+        }
+        function getSkinStr() {
+            return localStorage.getItem('SET_SKIN') || getCookie('_skin_') || 'blue';
+        }
+        function setThemeColor(color_str) {
+            var color_val = ({
+                blue: '#235cb3ed',
+                red: '#da3628eb',
+                dark: '#1b1b1be8'
+            })[color_str]
+            var metaThemeColor = document.querySelector("meta[name=theme-color]");
+            metaThemeColor.setAttribute("content", color_val);
+        }
+        var skin_str = getSkinStr()
+        if(skin_str.startsWith('skin_')) {
+            skin_str = skin_str.split('_')[1]
+        }
+        document.body.className = 'theme-' + skin_str;
+        setThemeColor(skin_str)
+    </script>
+    <!-- built files will be auto injected -->
+
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+
+
+$themes: (
+    red: (
+        c-bg: #da3628eb,
+        c-control-txt: #fff,
+        c-tab-bg: #fbfbfbf0,
+        c-border: #ddd,
+        c-paper-bg: #efeae6,
+        c-txt-main: #fffffd,
+        c-txt-hl: #fb4f67,
+        c-txt-c: #384651,
+        c-txt-c-hl: #d73e2e,
+        c-bg-hl: #FFF,
+        c-item-bg: #fefefe,
+        c-item-border: #e4e4e4,
+        c-item-txt: #364751,
+        c-tap: #de4e4138,
+        c-refresh: #35adec,
+        c-border-darker: #bfbfbf4d,
+        c-home-fg: #faf9f7,
+        c-shadow: #efd7c4c9
+    ),
+    dark: (
+        c-bg: #1b1b1be8,
+        c-control-txt: #8c8c8c,
+        c-tab-bg: #272624f0,
+        c-border: #60513c,
+        c-paper-bg: #1f1f1f,
+        c-txt-main: #8d8d8d,
+        c-txt-hl: #c4a272,
+        c-txt-c: #c2a271,
+        c-txt-c-hl: #c2a470,
+        c-bg-hl: #4d4f4e,
+        c-item-bg: #3c3c3c,
+        c-item-border: #4a4742,
+        c-item-txt: #8c8c8c,
+        c-tap: #bfa07149,
+        c-refresh: #35adec,
+        c-border-darker: #bfbfbf4d,
+        c-home-fg: #2e2e2e,
+        c-shadow: #000000c4
+    ),
+    blue: (
+        c-bg: #235cb3ed,
+        c-control-txt: #fff,
+        c-tab-bg: #fbfbfbf0,
+        c-border: #ddd,
+        c-paper-bg: #ddefff,
+        c-txt-main: #FFF,
+        c-txt-hl: #0089e7,
+        c-txt-c: #666,
+        c-txt-c-hl: #2f62af,
+        c-bg-hl: #FFF,
+        c-item-bg: #f9fcff,
+        c-item-border: #e9ecef,
+        c-item-txt: #374752,
+        c-tap: rgba(168, 213, 255, 0.274),
+        c-refreh: #35adec,
+        c-border-darker: #bfbfbf4d,
+		c-home-fg: #ebf4fb,
+        c-shadow: #8dbde8c7
+    ),
+);
+
+@mixin themify() {
+    & {
+        transition: all 0.3s ease-in;
+        transition-property: background, color, translate3d, border, box-shadow;
+    }
+    @each $theme-name, $map in $themes {
+        .theme-#{$theme-name} & {
+            $theme-map: () !global;
+            @each $key, $value in $map {
+                $theme-map: map-merge($theme-map, ($key: $value)) !global;
+            }
+        
+            @content;
+        
+            $theme-map: null !global;
+        }
+    }
+}
+
+@mixin adjustBrightness() {
+    .theme-dark & {
+        filter: brightness(85%);
+    }
+}
+    
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}
+
